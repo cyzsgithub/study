@@ -10,8 +10,9 @@ typedef struct _Node{
 pNode creatDoubleList(int n);
 pNode insertData(pNode header, void *data, int position);
 pNode deletePosition(pNode header, int position);
-int* findData(pNode header, void *data);
+int * findData(pNode header, void* data);
 int isEmpty(pNode header);
+int printList(pNode header);
 int destory(pNode header);
 
 pNode creatDoubleList(int n)
@@ -182,9 +183,23 @@ int destory(pNode header)
     return -1;
 }
 
-int main(void)
+int printList(pNode header)
 {
-    pNode head;
-    head=creatDoubleList(5);
+    pNode p=header;
+    if(p!=NULL)
+    {
+        printf("%d\n",*(int*)(p->data));
+        p=p->next;
+    }
+    else
+    {
+        return 0;
+    }
+    while(p!=header)
+    {
+        printf("%d\n",*(int*)(p->data));
+        p=p->next;
+    }
     return 0;
 }
+
