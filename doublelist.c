@@ -6,13 +6,13 @@ typedef struct _Node{
     struct _Node *pre;
     struct _Node *next;
 }Node,*pNode;
-
+typedef int (*DListDataPrintFunc)(void *data);
 pNode creatDoubleList(int n);
 pNode insertData(pNode header, void *data, int position);
 pNode deletePosition(pNode header, int position);
 int * findData(pNode header, void* data);
 int isEmpty(pNode header);
-int printList(pNode header);
+int printList(pNode header, DListDataPrintFunc print);
 int destory(pNode header);
 
 pNode creatDoubleList(int n)
@@ -183,12 +183,12 @@ int destory(pNode header)
     return -1;
 }
 
-int printList(pNode header)
+int printList(pNode header, DListDataPrintFunc print)
 {
     pNode p=header;
     if(p!=NULL)
     {
-        printf("%d\n",*(int*)(p->data));
+        print(p->data);
         p=p->next;
     }
     else
@@ -197,7 +197,7 @@ int printList(pNode header)
     }
     while(p!=header)
     {
-        printf("%d\n",*(int*)(p->data));
+        print(p->data);
         p=p->next;
     }
     return 0;
