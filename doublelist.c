@@ -1,19 +1,25 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+typedef int bool;
+#define true 0
+#define false 1
+
+typedef enum{DLIST_NULL=-1,DLIST_TRUE=0,DLIST_FLASE=1} reFlag;
 typedef struct _Node{
     void *data;
     struct _Node *pre;
     struct _Node *next;
 }Node,*pNode;
-typedef int (*DListDataPrintFunc)(void *data);
+
+typedef reFlag (*DListDataPrintFunc)(void *data);
 pNode creatDoubleList(int n);
 pNode insertData(pNode header, void *data, int position);
 pNode deletePosition(pNode header, int position);
 int * findData(pNode header, void* data);
-int isEmpty(pNode header);
-int printList(pNode header, DListDataPrintFunc print);
-int destory(pNode header);
+bool isEmpty(pNode header);
+reFlag printList(pNode header, DListDataPrintFunc print);
+bool destory(pNode header);
 
 pNode creatDoubleList(int n)
 {
@@ -111,7 +117,7 @@ int * findData(pNode header, void* data)
     typedef struct iNode{
     int num;
     struct iNode *next;
-    }iNode,*piNode;
+    }iNode,*piNode;//use list save finded lise[n].n
 
     piNode head=(piNode)malloc(sizeof(iNode));
     piNode temp=NULL;
@@ -158,15 +164,15 @@ int * findData(pNode header, void* data)
     return iarr;
 }
 
-int isEmpty(pNode header)
+bool isEmpty(pNode header)
 {
     if(header!=NULL)
-        return -1;
+        return false;
     else
-        return 0;
+        return true;
 }
 
-int destory(pNode header)
+bool destory(pNode header)
 {
     if(header!=NULL)
     {
@@ -178,14 +184,15 @@ int destory(pNode header)
             n=n->next;
             free(p);
         }
-        return 0;
+        return true;
     }
-    return -1;
+    return false;
 }
 
-int printList(pNode header, DListDataPrintFunc print)
+reFlag printList(pNode header, DListDataPrintFunc print)
 {
     pNode p=header;
+    reFlag reflag=0;
     if(p!=NULL)
     {
         print(p->data);
@@ -193,13 +200,33 @@ int printList(pNode header, DListDataPrintFunc print)
     }
     else
     {
-        return 0;
+        return -1;
     }
     while(p!=header)
     {
         print(p->data);
         p=p->next;
     }
-    return 0;
+    return reflag;
 }
-
+typedef reFlag (*Func)(void* data, void* context);
+reFlag listTraversal(pNode header, Func func, void* context)
+{
+    pNode p=header;
+    reFlag reflag=0;
+    if(p!=NULL)
+    {
+        func(p->data, context);
+        p=p->next;
+    }
+    else
+    {
+        return -1;
+    }
+    while(p!=header)
+    {
+        func(p->data, context);
+        p=p->next;
+    }
+    return reflag;
+}

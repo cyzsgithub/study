@@ -1,6 +1,6 @@
 #include "doublelist.c"
 
-int print_int(void* data)
+reFlag print_int(void* data)
 {
     printf("%d\n",*(int*)data);
     return 0;
